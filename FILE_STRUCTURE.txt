@@ -1,0 +1,124 @@
+PROMPT DRAWER - FILE STRUCTURE
+═══════════════════════════════════════════════════════════════════════════
+
+📦 prompt-drawer-extension/
+│
+├── 📄 manifest.json              → Extension configuration (REQUIRED)
+├── 📄 background.js              → Background service worker
+├── 📄 content.js                 → Content script (drawer UI logic)
+├── 📄 drawer.css                 → Drawer styling
+│
+├── 📄 options.html               → Settings page HTML
+├── 📄 options.js                 → Settings page logic
+├── 📄 options.css                → Settings page styling
+│
+├── 📁 icons/
+│   ├── icon16.png                → Extension icon (16x16)
+│   ├── icon48.png                → Extension icon (48x48)
+│   └── icon128.png               → Extension icon (128x128)
+│
+└── 📄 README.md                  → Full documentation
+
+═══════════════════════════════════════════════════════════════════════════
+
+CORE FILES EXPLAINED:
+
+📄 manifest.json
+   • Defines extension metadata and permissions
+   • Specifies which scripts to load
+   • Configures context menus and storage
+   • Required for Chrome to recognize the extension
+
+📄 background.js
+   • Runs in the background as a service worker
+   • Handles extension icon clicks
+   • Manages context menu (right-click) integration
+   • Initializes default snippets on first install
+
+📄 content.js
+   • Injected into every webpage
+   • Creates the floating drawer UI
+   • Handles snippet insertion into input fields
+   • Manages drag-and-drop functionality
+   • Communicates with background script
+
+📄 drawer.css
+   • Modern gradient purple styling
+   • Smooth animations and transitions
+   • Responsive design
+   • Custom scrollbar styling
+
+📄 options.html/js/css
+   • Full-featured settings page
+   • Add/edit/delete snippets and prompts
+   • Export/import functionality
+   • Category management
+
+═══════════════════════════════════════════════════════════════════════════
+
+INSTALLATION REQUIREMENTS:
+
+✅ MUST HAVE:
+   - All files listed above
+   - Folder structure intact
+   - manifest.json in root directory
+
+🚫 DON'T NEED:
+   - README.md (helpful but not required)
+   - Any documentation files
+   - Build tools or dependencies
+
+═══════════════════════════════════════════════════════════════════════════
+
+HOW IT WORKS:
+
+1. User clicks extension icon
+   → background.js receives the click
+   → Sends message to content.js
+   
+2. content.js toggles drawer
+   → Creates floating UI if first time
+   → Loads snippets from chrome.storage
+   → Displays with animations
+
+3. User clicks snippet
+   → content.js inserts text at cursor
+   → Increments usage count
+   → Reorders snippets by popularity
+
+4. User right-clicks text
+   → background.js shows context menu
+   → Saves selection to storage
+   → Notifies content.js
+
+5. User opens settings
+   → options.html loads
+   → options.js fetches data from storage
+   → User manages collection
+   → Changes sync automatically
+
+═══════════════════════════════════════════════════════════════════════════
+
+CUSTOMIZATION TIPS:
+
+🎨 Change Colors:
+   Edit drawer.css - look for gradient values:
+   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+📝 Add Default Snippets:
+   Edit background.js - add to defaultPrompts array
+
+🔧 Modify Categories:
+   Update filter buttons in content.js and dropdown in options.html
+
+📏 Resize Drawer:
+   Edit drawer.css - change width: 340px in .prompt-drawer-container
+
+═══════════════════════════════════════════════════════════════════════════
+
+NO BUILD PROCESS NEEDED!
+
+This is pure vanilla JavaScript - no npm, no webpack, no compilation.
+Just load the folder directly into Chrome and it works! 🎉
+
+═══════════════════════════════════════════════════════════════════════════

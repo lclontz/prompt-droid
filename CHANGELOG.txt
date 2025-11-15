@@ -1,0 +1,102 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                        PROMPT DRAWER - CHANGELOG                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Version 1.2 - November 14, 2025
+═══════════════════════════════════════════════════════════════════════════════
+
+🎨 NEW FEATURE: Color Scheme Selector
+
+  ✅ Choose from 12 Subaru Crosstrek Colorways!
+     Each color scheme is named after and uses the exact colors from
+     Subaru Crosstrek trim options:
+     
+     • Sapphire Blue Pearl (default)
+     • Magnetite Gray Metallic
+     • Crystal White Pearl
+     • Ice Silver Metallic
+     • Crystal Black Silica
+     • Venetian Red Pearl
+     • Plasma Yellow Pearl
+     • Desert Khaki
+     • Cool Gray Khaki
+     • Cascade Green Silica
+     • Horizon Blue Pearl
+     • Pure Red
+     
+  🎨 How to Use:
+     1. Open Settings (⚙️ button in drawer or right-click extension icon)
+     2. Click on any color scheme card to switch
+     3. Color changes apply immediately to both drawer and settings page
+     4. Your choice syncs across all Chrome browsers
+     
+  🔧 Technical Implementation:
+     • New color-schemes.js file with all colorway definitions
+     • CSS variables for dynamic theming
+     • Persistent storage of user preference
+     • Responsive color scheme grid in settings
+     • Visual preview of each color scheme
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Version 1.1 - November 14, 2025
+═══════════════════════════════════════════════════════════════════════════════
+
+🎨 VISUAL UPDATES:
+
+  ✅ New Color Theme: Sapphire Blue
+     - Changed from purple gradient to Subaru Crosstrek's Sapphire Blue
+     - Primary color: #0C4B8E (Deep Sapphire Blue)
+     - Secondary color: #154A7C (Rich Blue)
+     - Accent color: #E8F2F9 (Light Blue tint for hovers)
+
+  🔧 Updated Components:
+     • Main drawer background gradient
+     • Usage count badges
+     • Active filter button highlighting
+     • Snippet hover states
+     • Notification toasts
+     • Settings page background
+     • Primary buttons
+     • Category badges
+     • Form focus states
+     • Item card hover effects
+
+🐛 BUG FIXES:
+
+  ✅ Settings Button Fixed
+     - Settings button in drawer popup now properly opens the options page
+     - Previously was sending a message instead of directly opening options
+     - Now uses chrome.runtime.openOptionsPage() for reliable functionality
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Version 1.0 - November 14, 2025
+═══════════════════════════════════════════════════════════════════════════════
+
+🎉 INITIAL RELEASE:
+
+  ✨ Core Features:
+     • Floating draggable drawer panel
+     • 6 category filters (Mood, Role, Brevity, Format, Meta, Custom)
+     • 12 pre-loaded useful snippets
+     • Usage-based automatic sorting
+     • Saved prompts dropdown
+     • Right-click context menu integration
+     • Full settings/management page
+     • Export/Import functionality
+     • Chrome sync storage support
+
+═══════════════════════════════════════════════════════════════════════════════
+
+                          WHAT'S NEXT?
+
+  Possible future enhancements:
+  • Keyboard shortcuts
+  • Search/filter snippets
+  • Tags/multi-category support
+  • Quick edit from drawer
+  • Snippet templates with variables
+  • Import from popular prompt libraries
+
+═══════════════════════════════════════════════════════════════════════════════
