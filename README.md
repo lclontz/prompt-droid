@@ -2,6 +2,8 @@
 
 A Chrome or Edge extension that provides quick access to your favorite prompt snippets and templates while working with AI assistants.
 
+![Prompt Drawer UI](./prompt-drawer-ui-1.png)
+
 ## Features
 
 - ✨ **Floating Panel**: A beautiful, draggable floating drawer that stays on top of your content
