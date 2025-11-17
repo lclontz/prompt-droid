@@ -141,6 +141,18 @@ Currently, the extension uses the icon click to toggle. You can set up a custom 
 - Check Chrome's sync storage isn't full
 - Try exporting your data and reimporting
 
+## Known Limitations
+
+**Sites with Content Security Policy restrictions:**
+- Some sites (particularly Microsoft properties like copilot.microsoft.com) have strict security policies that prevent browser extensions from injecting content scripts
+- On these sites, the extension drawer may not appear when clicking the icon
+- This is a security feature of those sites and cannot be bypassed
+
+**Clipboard fallback:**
+- On sites with complex input fields (React components, Shadow DOM, etc.), snippets may be copied to clipboard instead of directly inserted
+- Simply click in the input field and paste (Ctrl+V/Cmd+V)
+- This ensures the extension works everywhere, even on sites with unusual input implementations
+
 ## Development
 
 Built with:

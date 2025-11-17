@@ -1,4 +1,13 @@
 // Color schemes based on Subaru Crosstrek colorways
+(function() {
+  'use strict';
+  
+  // Guard against double loading
+  if (window.promptDrawerColorSchemes) {
+    return;
+  }
+  window.promptDrawerColorSchemes = true;
+  
 const COLOR_SCHEMES = {
   'sapphire-blue': {
     name: 'Sapphire Blue Pearl',
@@ -100,7 +109,10 @@ function applyColorScheme(schemeId) {
   root.style.setProperty('--text-color-secondary', scheme.dark ? '#666666' : 'rgba(255, 255, 255, 0.8)');
 }
 
-// Export for use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { COLOR_SCHEMES, getCurrentColorScheme, setColorScheme, applyColorScheme };
-}
+// Make functions globally available
+window.COLOR_SCHEMES = COLOR_SCHEMES;
+window.getCurrentColorScheme = getCurrentColorScheme;
+window.setColorScheme = setColorScheme;
+window.applyColorScheme = applyColorScheme;
+
+})();

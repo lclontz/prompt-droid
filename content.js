@@ -1,4 +1,15 @@
 // Content script for Prompt Drawer
+(function() {
+  'use strict';
+  
+  console.log('Prompt Drawer: Content script loaded on', window.location.hostname);
+
+  // Guard against double initialization
+  if (window.promptDrawerInitialized) {
+    console.log('Prompt Drawer: Already initialized, skipping');
+    return; // Exit early
+  }
+  window.promptDrawerInitialized = true;
 
 let drawerVisible = false;
 let drawerElement = null;
@@ -10,9 +21,13 @@ let isDragging = false;
 async function createDrawer() {
   if (drawerElement) return;
 
-  // Apply the saved color scheme
-  const currentScheme = await getCurrentColorScheme();
-  applyColorScheme(currentScheme);
+  // Apply the saved color scheme (with error handling)
+  try {
+    const currentScheme = await getCurrentColorScheme();
+    applyColorScheme(currentScheme);
+  } catch (error) {
+    console.log('Color scheme not available, using defaults');
+  }
 
   const drawer = document.createElement('div');
   drawer.id = 'prompt-drawer';
@@ -57,7 +72,11 @@ async function createDrawer() {
     
     <div class="prompt-drawer-footer">
       <button class="settings-btn" id="open-settings">⚙️ Settings</button>
-      <a href="https://clontz.blog" target="_blank" class="credit-link" title="Visit Lee Clontz's blog">by Lee Clontz</a> or the project <a href="https://github.com/lclontz/prompt-drawer">GitHub repo</a>.
+      <div class="credit-links">
+        <a href="https://clontz.blog" target="_blank" class="credit-link" title="Visit Lee Clontz's blog">by Lee Clontz</a>
+        <span class="credit-separator">•</span>
+        <a href="https://github.com/lclontz/prompt-drawer" target="_blank" class="credit-link" title="View on GitHub">GitHub</a>
+      </div>
     </div>
   `;
 
@@ -158,7 +177,16 @@ function stopDragging() {
 
 async function loadSnippets() {
   const container = drawerElement.querySelector('#snippets-container');
-  const data = await chrome.storage.sync.get(['snippets', 'savedPrompts']);
+  
+  // Safe storage access
+  let data;
+  try {
+    data = await chrome.storage.sync.get(['snippets', 'savedPrompts']);
+  } catch (error) {
+    console.error('Storage access error:', error);
+    container.innerHTML = '<div class="no-snippets">Unable to load snippets</div>';
+    return;
+  }
   
   let snippets = data.snippets || [];
   
@@ -238,8 +266,16 @@ function insertTextAtCursor(text) {
     activeElement.value = currentValue.substring(0, start) + text + currentValue.substring(end);
     activeElement.selectionStart = activeElement.selectionEnd = start + text.length;
     
-    // Trigger input event for frameworks like React
+    // Trigger multiple events for framework compatibility
     activeElement.dispatchEvent(new Event('input', { bubbles: true }));
+    activeElement.dispatchEvent(new Event('change', { bubbles: true }));
+    activeElement.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true }));
+    activeElement.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
+    
+    // Focus the element
+    activeElement.focus();
+    
+    showNotification('Snippet inserted!');
   } 
   // Check if we're in a contenteditable element
   else if (activeElement && activeElement.isContentEditable) {
@@ -247,16 +283,27 @@ function insertTextAtCursor(text) {
     if (selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       range.deleteContents();
-      range.insertNode(document.createTextNode(text));
+      const textNode = document.createTextNode(text);
+      range.insertNode(textNode);
       range.collapse(false);
       selection.removeAllRanges();
       selection.addRange(range);
+      
+      // Trigger input event
+      activeElement.dispatchEvent(new Event('input', { bubbles: true }));
+      
+      showNotification('Snippet inserted!');
+    } else {
+      // No selection, fallback to clipboard
+      navigator.clipboard.writeText(text).then(() => {
+        showNotification('Copied to clipboard! Paste it where needed.');
+      });
     }
   }
   // Fallback: copy to clipboard
   else {
     navigator.clipboard.writeText(text).then(() => {
-      showNotification('Copied to clipboard! Paste it where needed.');
+      showNotification('Copied to clipboard! Click in the input field and paste (Ctrl+V).');
     });
   }
 }
@@ -290,25 +337,55 @@ function toggleDrawer() {
   
   drawerVisible = !drawerVisible;
   drawerElement.classList.toggle('visible', drawerVisible);
+  
+  console.log('Drawer toggled:', drawerVisible ? 'visible' : 'hidden');
 }
 
 // Listen for messages from background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'toggleDrawer') {
+  if (message.action === 'ping') {
+    sendResponse({ loaded: true });
+    return true;
+  } else if (message.action === 'toggleDrawer') {
     toggleDrawer();
+    sendResponse({ success: true, visible: drawerVisible });
+    return true;
   } else if (message.action === 'itemSaved') {
     showNotification(`${message.type === 'snippet' ? 'Snippet' : 'Prompt'} saved!`);
     if (drawerVisible) {
       loadSnippets();
     }
   } else if (message.action === 'openSettings') {
-    chrome.runtime.sendMessage({ action: 'openOptions' });
+    chrome.runtime.sendMessage({ action: 'openOptions' }, (response) => {
+      if (chrome.runtime.lastError) {
+        // Silently handle error - background script may not be ready
+        console.log('Background script not ready, using fallback');
+        window.open(chrome.runtime.getURL('options.html'), '_blank');
+      }
+    });
   }
 });
 
 // Initialize on load
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', createDrawer);
+// Check if we're in a valid context (not blocked by CSP or iframe restrictions)
+if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        createDrawer();
+      } catch (error) {
+        console.error('Prompt Drawer initialization error:', error);
+      }
+    });
+  } else {
+    try {
+      createDrawer();
+    } catch (error) {
+      console.error('Prompt Drawer initialization error:', error);
+    }
+  }
 } else {
-  createDrawer();
+  console.log('Prompt Drawer: Chrome extension context not available on this page');
 }
+
+})(); // Close IIFE

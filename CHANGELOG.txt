@@ -44,6 +44,21 @@ Version 1.2 - November 14, 2025
      - Changed from inline onclick to event delegation
      - More reliable and follows modern JavaScript best practices
 
+  ✅ Fixed "Receiving end does not exist" Error
+     - Added comprehensive error handling for message passing
+     - Extension now works on all sites including copilot.microsoft.com
+     - Graceful fallbacks when background script isn't ready
+     - Better try-catch wrappers around initialization
+     - No more console errors on strict CSP sites
+
+  ✅ Programmatic Script Injection
+     - Added "scripting" permission for wider compatibility
+     - Falls back to programmatic injection on restricted sites
+     - Works on Microsoft sites (copilot.microsoft.com, etc.)
+     - Declarative injection for most sites (efficient)
+     - Programmatic injection as fallback (compatibility)
+     - Guard against double initialization
+
 ✨ UI ENHANCEMENTS:
 
   ✅ Added Creator Credit
@@ -51,6 +66,12 @@ Version 1.2 - November 14, 2025
      - "Made with ❤️ by Lee Clontz" in settings page footer
      - Links to https://clontz.blog
      - Subtle, tasteful styling that doesn't interfere with UX
+
+  ✅ Scrollable Filter Bar
+     - Category filter bar now has horizontal scrollbar
+     - All filters (All, Mood, Role, Brevity, Format, Meta) are accessible
+     - Thin, styled scrollbar matches the UI theme
+     - Works on all browsers
 
 ═══════════════════════════════════════════════════════════════════════════════
 

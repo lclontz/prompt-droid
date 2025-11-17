@@ -297,6 +297,18 @@
   transform: translateY(-1px);
 }
 
+.credit-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.credit-separator {
+  color: var(--text-color-secondary);
+  opacity: 0.5;
+  font-size: 11px;
+}
+
 .credit-link {
   color: var(--text-color-secondary);
   font-size: 11px;
@@ -315,7 +327,9 @@
 .prompt-drawer-notification {
   position: fixed;
   bottom: 20px;
+  right: 20px;
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
   padding: 14px 20px;
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
