@@ -51,14 +51,6 @@ Version 1.2 - November 14, 2025
      - Better try-catch wrappers around initialization
      - No more console errors on strict CSP sites
 
-  ✅ Programmatic Script Injection
-     - Added "scripting" permission for wider compatibility
-     - Falls back to programmatic injection on restricted sites
-     - Works on Microsoft sites (copilot.microsoft.com, etc.)
-     - Declarative injection for most sites (efficient)
-     - Programmatic injection as fallback (compatibility)
-     - Guard against double initialization
-
 ✨ UI ENHANCEMENTS:
 
   ✅ Added Creator Credit

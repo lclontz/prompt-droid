@@ -40,67 +40,8 @@ chrome.runtime.onInstalled.addListener(async () => {
 });
 
 // Handle extension icon click
-chrome.action.onClicked.addListener(async (tab) => {
-  // Don't try to inject on restricted pages
-  const restrictedProtocols = ['chrome:', 'chrome-extension:', 'edge:', 'about:'];
-  const restrictedUrls = ['chrome.google.com/webstore', 'microsoftedge.microsoft.com/addons'];
-  
-  const url = tab.url || '';
-  
-  // Check if this is a restricted URL
-  const isRestricted = restrictedProtocols.some(protocol => url.startsWith(protocol)) ||
-                       restrictedUrls.some(restricted => url.includes(restricted));
-  
-  if (isRestricted || !url) {
-    // Silently ignore - these pages can't be scripted
-    return;
-  }
-  
-  try {
-    // Try to send a message first to see if already injected
-    chrome.tabs.sendMessage(tab.id, { action: 'ping' }, async (response) => {
-      if (chrome.runtime.lastError || !response) {
-        // Not injected yet - inject now
-        console.log('Injecting content script on', url);
-        
-        try {
-          // Inject CSS first
-          await chrome.scripting.insertCSS({
-            target: { tabId: tab.id },
-            files: ['drawer.css']
-          });
-          
-          // Then inject JavaScript files
-          // Using default ISOLATED world so we have chrome API access
-          await chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            files: ['color-schemes.js']
-          });
-          
-          await chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            files: ['content.js']
-          });
-          
-          // Wait for initialization, then toggle drawer
-          setTimeout(() => {
-            chrome.tabs.sendMessage(tab.id, { action: 'toggleDrawer' });
-          }, 200);
-          
-        } catch (error) {
-          // Suppress expected errors for restricted pages
-          if (!error.message.includes('gallery cannot be scripted')) {
-            console.error('Failed to inject:', error.message);
-          }
-        }
-      } else {
-        // Already injected - just toggle
-        chrome.tabs.sendMessage(tab.id, { action: 'toggleDrawer' });
-      }
-    });
-  } catch (error) {
-    // Suppress errors
-  }
+chrome.action.onClicked.addListener((tab) => {
+  chrome.tabs.sendMessage(tab.id, { action: 'toggleDrawer' });
 });
 
 // Handle context menu clicks

@@ -6,8 +6,7 @@
   "permissions": [
     "storage",
     "contextMenus",
-    "activeTab",
-    "scripting"
+    "activeTab"
   ],
   "action": {
     "default_title": "Open Prompt Drawer"
@@ -15,6 +14,14 @@
   "background": {
     "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["color-schemes.js", "content.js"],
+      "css": ["drawer.css"],
+      "run_at": "document_idle"
+    }
+  ],
   "options_page": "options.html",
   "icons": {
     "16": "icons/icon16.png",
