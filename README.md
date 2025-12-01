@@ -1,4 +1,4 @@
-# Prompt Drawer
+# Prompt Droid
 
 A Chrome or Edge extension that provides quick access to your favorite prompt snippets and templates while working with AI assistants.
 
@@ -20,19 +20,19 @@ A Chrome or Edge extension that provides quick access to your favorite prompt sn
 
 ### From Source (Developer Mode)
 
-1. Download the [zip file](https://github.com/lclontz/prompt-drawer/blob/main/prompt-drawer-extension.zip) and unpack it
+1. Download the [zip file](https://github.com/lclontz/prompt-droid/blob/main/prompt-droid.zip) and unpack it
 2. Open Chrome or Edge and navigate to `chrome://extensions/`
 3. Ensure that the **Developer mode** toggle is enabled
 4. Click **Load unpacked**
-5. Select the `prompt-drawer-extension` folder you unpacked in step 1
-6. Select the extensions link on your toolbar and pin `Prompt Drawer`
+5. Select the `prompt-droid` folder you unpacked in step 1
+6. Select the extensions link on your toolbar and pin `Prompt Droid`
 7. The extension icon should appear in your toolbar!
 
 ## Usage
 
 ### Opening the Drawer
 
-Click the Prompt Drawer icon in your Chrome toolbar to toggle the floating drawer.
+Click the Prompt Droid icon in your Chrome toolbar to toggle the floating drawer.
 
 ### Using Snippets
 
@@ -60,8 +60,8 @@ Use the category buttons at the top of the drawer to filter:
 
 1. **Highlight any text** on a web page
 2. **Right-click** and choose:
-   - **"Save to Prompt Drawer (snippet)"** - for short reusable phrases
-   - **"Save to Prompt Drawer (full prompt)"** - for complete prompts
+   - **"Save to Prompt Droid (snippet)"** - for short reusable phrases
+   - **"Save to Prompt Droid (full prompt)"** - for complete prompts
 3. The text will be added to your collection and appear in the drawer
 
 ### Managing Your Collection
@@ -75,11 +75,6 @@ In the settings page, you can:
 - **Export** your data as a JSON backup
 - **Import** previously exported data
 - **Reset** to default snippets
-
-### Dragging the Drawer
-
-- Click and drag the header area or the grip icon (⋮⋮) to move the drawer
-- The drawer will stay within the viewport bounds
 
 ## Default Snippets
 
